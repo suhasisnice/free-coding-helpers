@@ -1,0 +1,244 @@
+{
+  "threshold": 0.8,
+  "minJobs": 3,
+  "types": {
+    "edit": {
+      "ranked": [
+        {
+          "model": "groq/openai/gpt-oss-120b",
+          "passed": 15,
+          "judged": 15,
+          "rate": 1
+        },
+        {
+          "model": "groq/qwen/qwen3.8-27b",
+          "passed": 14,
+          "judged": 14,
+          "rate": 1
+        },
+        {
+          "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+          "passed": 15,
+          "judged": 16,
+          "rate": 0.9375
+        },
+        {
+          "model": "gemini/gemini-flash-lite-latest",
+          "passed": 14,
+          "judged": 16,
+          "rate": 0.875
+        },
+        {
+          "model": "mistral/codestral-latest",
+          "passed": 7,
+          "judged": 8,
+          "rate": 0.875
+        },
+        {
+          "model": "groq/openai/gpt-oss-20b",
+          "passed": 4,
+          "judged": 9,
+          "rate": 0.4444444444444444
+        }
+      ],
+      "delegate": true
+    },
+    "bugfix": {
+      "ranked": [
+        {
+          "model": "groq/openai/gpt-oss-120b",
+          "passed": 12,
+          "judged": 12,
+          "rate": 1
+        },
+        {
+          "model": "groq/qwen/qwen3.8-27b",
+          "passed": 10,
+          "judged": 10,
+          "rate": 1
+        },
+        {
+          "model": "mistral/codestral-latest",
+          "passed": 5,
+          "judged": 5,
+          "rate": 1
+        },
+        {
+          "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+          "passed": 12,
+          "judged": 13,
+          "rate": 0.9230769230769231
+        },
+        {
+          "model": "gemini/gemini-flash-lite-latest",
+          "passed": 11,
+          "judged": 12,
+          "rate": 0.9166666666666666
+        },
+        {
+          "model": "groq/openai/gpt-oss-20b",
+          "passed": 2,
+          "judged": 7,
+          "rate": 0.2857142857142857
+        }
+      ],
+      "delegate": true
+    },
+    "tests": {
+      "ranked": [
+        {
+          "model": "gemini/gemini-flash-lite-latest",
+          "passed": 7,
+          "judged": 7,
+          "rate": 1
+        },
+        {
+          "model": "groq/openai/gpt-oss-120b",
+          "passed": 7,
+          "judged": 7,
+          "rate": 1
+        },
+        {
+          "model": "mistral/codestral-latest",
+          "passed": 5,
+          "judged": 5,
+          "rate": 1
+        },
+        {
+          "model": "groq/qwen/qwen3.8-27b",
+          "passed": 4,
+          "judged": 4,
+          "rate": 1
+        },
+        {
+          "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+          "passed": 6,
+          "judged": 7,
+          "rate": 0.8571428571428571
+        },
+        {
+          "model": "groq/openai/gpt-oss-20b",
+          "passed": 5,
+          "judged": 6,
+          "rate": 0.8333333333333334
+        }
+      ],
+      "delegate": true
+    },
+    "refactor": {
+      "ranked": [
+        {
+          "model": "groq/openai/gpt-oss-120b",
+          "passed": 7,
+          "judged": 7,
+          "rate": 1
+        },
+        {
+          "model": "groq/qwen/qwen3.8-27b",
+          "passed": 4,
+          "judged": 4,
+          "rate": 1
+        },
+        {
+          "model": "mistral/codestral-latest",
+          "passed": 3,
+          "judged": 3,
+          "rate": 1
+        },
+        {
+          "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+          "passed": 7,
+          "judged": 8,
+          "rate": 0.875
+        },
+        {
+          "model": "gemini/gemini-flash-lite-latest",
+          "passed": 5,
+          "judged": 6,
+          "rate": 0.8333333333333334
+        },
+        {
+          "model": "groq/openai/gpt-oss-20b",
+          "passed": 0,
+          "judged": 4,
+          "rate": 0
+        }
+      ],
+      "delegate": true
+    },
+    "explain": {
+      "ranked": [
+        {
+          "model": "gemini/gemini-flash-lite-latest",
+          "passed": 5,
+          "judged": 5,
+          "rate": 1
+        },
+        {
+          "model": "groq/openai/gpt-oss-120b",
+          "passed": 5,
+          "judged": 5,
+          "rate": 1
+        },
+        {
+          "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+          "passed": 5,
+          "judged": 5,
+          "rate": 1
+        },
+        {
+          "model": "groq/openai/gpt-oss-20b",
+          "passed": 3,
+          "judged": 3,
+          "rate": 1
+        },
+        {
+          "model": "groq/qwen/qwen3.8-27b",
+          "passed": 3,
+          "judged": 3,
+          "rate": 1
+        }
+      ],
+      "delegate": true
+    },
+    "review": {
+      "ranked": [],
+      "delegate": false
+    },
+    "feature": {
+      "ranked": [
+        {
+          "model": "groq/openai/gpt-oss-120b",
+          "passed": 7,
+          "judged": 7,
+          "rate": 1
+        },
+        {
+          "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+          "passed": 7,
+          "judged": 7,
+          "rate": 1
+        },
+        {
+          "model": "groq/qwen/qwen3.8-27b",
+          "passed": 5,
+          "judged": 5,
+          "rate": 1
+        },
+        {
+          "model": "gemini/gemini-flash-lite-latest",
+          "passed": 6,
+          "judged": 7,
+          "rate": 0.8571428571428571
+        },
+        {
+          "model": "groq/openai/gpt-oss-20b",
+          "passed": 0,
+          "judged": 3,
+          "rate": 0
+        }
+      ],
+      "delegate": true
+    }
+  }
+}

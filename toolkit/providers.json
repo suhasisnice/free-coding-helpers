@@ -1,0 +1,121 @@
+{
+  "updated": "2026-11-20",
+  "note": "Free-tier facts as found on 2026-11-20. 'source' says where each number came from; 'measured' is what our own benchmark saw. omnirouteId is the id `omniroute providers add <id>` takes.",
+  "providers": [
+    {
+      "id": "groq", "name": "Groq", "omnirouteId": "groq",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "signupUrl": "https://console.groq.com/login", "keyUrl": "https://console.groq.com/keys",
+      "keyFormat": "^gsk_[A-Za-z0-9]{20,}$", "card": false,
+      "limits": { "gpt-oss-120b / gpt-oss-20b / qwen3.8-27b": "30 req/min, 1,000 req/day, 8,000 tokens/min, 200,000 tokens/day (per model)" },
+      "source": "official: console.groq.com/docs/rate-limits", "confidence": "high",
+      "measured": "gpt-oss-120b 54/57 on the 57-task exam, 0 rate limits in 114K tokens; gpt-oss-20b hit the 200K tokens/day cap on 2026-09-29",
+      "testModel": "groq/openai/gpt-oss-120b", "status": "free",
+      "plain": "Fast. About 1,000 requests a day for free.",
+      "recommended": true
+    },
+    {
+      "id": "gemini", "name": "Google AI Studio (Gemini)", "omnirouteId": "gemini",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "signupUrl": "https://aistudio.google.com/", "keyUrl": "https://aistudio.google.com/apikey",
+      "keyFormat": "^AIza[0-9A-Za-z_-]{35}$", "card": false,
+      "limits": { "flash-lite": "about 10 req/min (community); daily cap unclear", "flash": "about 5 req/min, 20 req/day (community)" },
+      "source": "community list (cheahjs/free-llm-api-resources); Google publishes no fixed numbers; daily reset midnight Pacific", "confidence": "low",
+      "measured": "flash-lite 49/57, 0 rate limits in 243K tokens; flash-latest blocked by a 30 min cooldown on 2026-11-20",
+      "testModel": "gemini/gemini-flash-lite-latest", "status": "free",
+      "plain": "Just needs a Google account. About 10 requests a minute; daily amount not published.",
+      "recommended": true
+    },
+    {
+      "id": "nvidia", "name": "NVIDIA NIM (build.nvidia.com)", "omnirouteId": "nvidia",
+      "baseUrl": "https://integrate.api.nvidia.com/v1",
+      "signupUrl": "https://build.nvidia.com/", "keyUrl": "https://build.nvidia.com/settings/api-keys",
+      "keyFormat": "^nvapi-[A-Za-z0-9_-]{20,}$", "card": false,
+      "limits": { "all models": "40 req/min; prototyping credits, increases not granted on free accounts" },
+      "source": "community list + NVIDIA developer FAQ", "confidence": "medium",
+      "measured": "nemotron-3-ultra 53/57, 0 rate limits in 210K tokens (slow: median 14 s)",
+      "testModel": "nvidia/nvidia/nemotron-3-ultra-550b-a55b", "status": "free",
+      "plain": "You get 40 requests a minute, but the total daily amount is not published."
+    },
+    {
+      "id": "mistral", "name": "Mistral La Plateforme (Experiment plan)", "omnirouteId": "mistral",
+      "baseUrl": "https://api.mistral.ai/v1",
+      "signupUrl": "https://console.mistral.ai/", "keyUrl": "https://console.mistral.ai/api-keys",
+      "keyFormat": "^[A-Za-z0-9]{32}$", "card": false,
+      "limits": { "all models": "1 req/second, 500,000 tokens/min, 1,000,000,000 tokens/month (per model)" },
+      "source": "community list; needs phone verification and opting in to data training", "confidence": "medium",
+      "measured": "ministral 3-5/8 on the old exam; on 2026-11-20 OmniRoute said 'No active credentials for provider: mistral' after codestral's 402",
+      "testModel": "mistral/ministral-14b-latest", "status": "needs-attention"
+    },
+    {
+      "id": "codestral", "name": "Mistral Codestral", "omnirouteId": "codestral",
+      "baseUrl": "https://codestral.mistral.ai/v1",
+      "signupUrl": "https://console.mistral.ai/codestral", "keyUrl": "https://console.mistral.ai/codestral",
+      "keyFormat": "^[A-Za-z0-9]{32}$", "card": true,
+      "limits": { "codestral": "listed as 30 req/min, 2,000 req/day; we measured a burst limit after 3-4 calls/min ('reset after 3s')" },
+      "source": "community list; our run of 2026-11-20 returned 402 'You need a subscription'", "confidence": "high",
+      "measured": "23/33 then 402 payment required",
+      "testModel": "mistral/codestral-latest", "status": "paid-now"
+    },
+    {
+      "id": "openrouter", "name": "OpenRouter (:free models)", "omnirouteId": "openrouter",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "signupUrl": "https://openrouter.ai/", "keyUrl": "https://openrouter.ai/settings/keys",
+      "keyFormat": "^sk-or-v1-[a-f0-9]{64}$", "card": false,
+      "limits": { ":free models": "20 req/min; 50 req/day (1,000/day after buying 10 credits once)" },
+      "source": "official: openrouter.ai/docs/api-reference/limits (2026-09-29)", "confidence": "high",
+      "measured": "not tested yet (no key)", "status": "free",
+      "plain": "You get 50 requests a day for free, or 1,000 a day after buying 10 credits once."
+    },
+    {
+      "id": "cerebras", "name": "Cerebras", "omnirouteId": "cerebras",
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "signupUrl": "https://cloud.cerebras.ai/", "keyUrl": "https://cloud.cerebras.ai/platform/",
+      "keyFormat": "^csk-[a-z0-9]{40,}$", "card": false,
+      "limits": { "gpt-oss-120b, qwen-3-235b, llama-3.3-70b": "30 req/min, 60-64K tokens/min, 900 req/hour, 1M tokens/hour, 14,400 req/day, 1M tokens/day" },
+      "source": "community list (cheahjs/free-llm-api-resources)", "confidence": "medium",
+      "measured": "not tested yet (no key)", "status": "free",
+      "plain": "You get 14,400 requests a day for free, which is a lot."
+    },
+    {
+      "id": "cloudflare", "name": "Cloudflare Workers AI", "omnirouteId": "cloudflare-ai",
+      "baseUrl": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1",
+      "signupUrl": "https://dash.cloudflare.com/sign-up", "keyUrl": "https://dash.cloudflare.com/profile/api-tokens",
+      "keyFormat": "^[A-Za-z0-9_-]{40}$", "card": false,
+      "limits": { "all models": "10,000 neurons/day, reset 00:00 UTC; some models need billing" },
+      "source": "official: developers.cloudflare.com/workers-ai/platform/pricing (2026-09-29)", "confidence": "high",
+      "measured": "not tested yet (no key; also needs your account id)", "status": "free",
+      "plain": "You get 10,000 units a day for free, but some models need billing."
+    },
+    {
+      "id": "cohere", "name": "Cohere (trial key)", "omnirouteId": "cohere",
+      "baseUrl": "https://api.cohere.ai/compatibility/v1",
+      "signupUrl": "https://dashboard.cohere.com/welcome/register", "keyUrl": "https://dashboard.cohere.com/api-keys",
+      "keyFormat": "^[A-Za-z0-9]{40}$", "card": false,
+      "limits": { "all models": "20 req/min, 1,000 calls/month shared; not for production" },
+      "source": "official: docs.cohere.com/docs/rate-limits", "confidence": "high",
+      "measured": "not tested yet (no key)", "status": "free",
+      "plain": "You get 1,000 calls a month for free, but it is not for production."
+    },
+    {
+      "id": "sambanova", "name": "SambaNova Cloud", "omnirouteId": "sambanova",
+      "baseUrl": "https://api.sambanova.ai/v1",
+      "signupUrl": "https://cloud.sambanova.ai/", "keyUrl": "https://cloud.sambanova.ai/apis",
+      "keyFormat": "^[A-Za-z0-9-]{30,}$", "card": false,
+      "limits": { "free tier": "about 20 req/min, 20 req/day, 200K tokens/day (search snippet; page returned 403)" },
+      "source": "search snippet of the official page", "confidence": "low",
+      "measured": "not tested yet (no key)", "status": "free",
+      "plain": "You get about 20 requests a day for free, but the numbers are not confirmed."
+    },
+    {
+      "id": "huggingface", "name": "Hugging Face Inference Providers", "omnirouteId": "huggingface",
+      "baseUrl": "https://router.huggingface.co/v1",
+      "signupUrl": "https://huggingface.co/join", "keyUrl": "https://huggingface.co/settings/tokens",
+      "keyFormat": "^hf_[A-Za-z0-9]{30,}$", "card": false,
+      "limits": { "all": "$0.10/month of credits; more needs a purchase" },
+      "source": "official: huggingface.co/docs/inference-providers/pricing", "confidence": "high",
+      "measured": "not tested yet (no key); tiny allowance, a last resort", "status": "free",
+      "plain": "You get $0.10 of credits a month for free, which is a tiny amount."
+    }
+  ]
+}

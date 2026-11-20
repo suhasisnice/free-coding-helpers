@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Install Free Coding Helpers</title>
+<style>
+/* Modelled on the macOS Installer: sidebar of steps, one title line, a white pane, Go Back / Continue at the bottom right. See DESIGN.md. */
+:root{--desk:#dcdce1;--win:#ececec;--pane:#fff;--ink:#1d1d1f;--mut:#6e6e73;--line:#c6c6c8;--hair:#e5e5ea;--acc:#007aff;--accT:#0066cc;--ok:#248a3d;--bad:#d70015;--sel:#eaf2ff;--shadow:0 22px 70px rgba(0,0,0,.22),0 0 0 .5px rgba(0,0,0,.18)}
+@media (prefers-color-scheme:dark){:root{--desk:#141416;--win:#2c2c2e;--pane:#1c1c1e;--ink:#f5f5f7;--mut:#98989d;--line:#48484a;--hair:#38383a;--acc:#0a84ff;--accT:#409cff;--ok:#30d158;--bad:#ff453a;--sel:#0a84ff24;--shadow:0 22px 70px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.12)}}
+*{box-sizing:border-box}html,body{margin:0}
+body{min-height:100vh;background:var(--desk);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;display:grid;place-items:center;padding:32px 16px}
+.win{width:100%;max-width:860px;background:var(--win);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.tbar{height:38px;display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--mut);border-bottom:1px solid var(--hair)}
+.body{display:grid;grid-template-columns:200px 1fr;min-height:540px}
+nav{position:relative;padding:24px 0 24px 24px}nav ol{list-style:none;margin:0;padding:0}
+nav li{display:flex;align-items:center;gap:10px;padding:5px 0;color:var(--mut)}
+nav li::before{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line);flex:none}
+nav li.done{color:var(--ink)}nav li.done::before{background:var(--mut);border-color:var(--mut)}
+nav li.on{color:var(--ink);font-weight:600}nav li.on::before{background:var(--acc);border-color:var(--acc)}
+.art{position:absolute;left:22px;bottom:22px;width:116px;color:var(--mut);opacity:.16}
+.main{display:flex;flex-direction:column;padding:22px 22px 18px 4px;min-width:0}
+section{display:flex;flex-direction:column;flex:1}
+h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0 0 12px}
+.pane{flex:1;background:var(--pane);border:1px solid var(--line);border-radius:8px;padding:20px 22px;overflow:auto;max-height:62vh}
+.btns{display:flex;gap:10px;justify-content:flex-end;align-items:center;margin-top:14px}.btns .left{margin-right:auto}
+button{font:inherit;font-size:13px;font-weight:500;border-radius:6px;padding:6px 16px;min-width:92px;cursor:pointer;background:var(--pane);color:var(--ink);border:1px solid var(--line);box-shadow:0 1px 1px rgba(0,0,0,.06)}
+button.pri{background:var(--acc);border-color:transparent;color:#fff}button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid color-mix(in srgb,var(--acc) 45%,transparent);outline-offset:1px}
+p{margin:0 0 10px}.mut{color:var(--mut)}.small{font-size:12.5px}
+h2{font-size:14px;font-weight:600;margin:20px 0 8px}h2:first-child{margin-top:0}
+.kv{display:grid;grid-template-columns:110px 1fr}.kv div{padding:6px 0;border-bottom:1px solid var(--hair)}.kv div:nth-child(odd){color:var(--mut)}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--hair);border-radius:8px;cursor:pointer;margin-bottom:8px}
+.opt::before{content:"";width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);flex:none;margin-top:2px;background:var(--pane);box-sizing:border-box}
+.opt.sel{border-color:var(--acc);background:var(--sel)}.opt.sel::before{border:5px solid var(--acc)}
+input{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--pane);color:var(--ink);font:inherit}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}.row input{flex:1;min-width:170px}
+.bar{height:6px;background:var(--hair);border-radius:3px;overflow:hidden;margin:12px 0 8px}.bar i{display:block;height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .4s}
+.bar.ind i{width:30%;animation:s 1.1s ease-in-out infinite alternate}@keyframes s{from{margin-left:0}to{margin-left:70%}}
+.status{text-align:center;padding:36px 20px 8px}.status h3{font-size:15px;font-weight:600;margin:0}
+.res{margin-top:18px}.res h2{margin-top:0}.res div{padding:3px 0}
+details{margin-top:16px}summary{cursor:pointer;color:var(--accT);font-size:13px}
+pre{background:var(--win);border:1px solid var(--hair);border-radius:6px;padding:10px;max-height:200px;overflow:auto;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;margin:8px 0 0}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.hide{display:none!important}
+.check{width:64px;height:64px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin:6px auto 14px;color:#fff;font-size:34px;font-weight:700}.check.warn{background:var(--bad)}
+.step{border-bottom:1px solid var(--hair);padding:12px 0}.step:last-child{border-bottom:0}
+.step h3{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;margin:0;cursor:pointer}.step.dim h3{color:var(--mut);font-weight:500}
+.num{width:22px;height:22px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:12px;flex:none}
+.step.dim .num{background:var(--hair);color:var(--mut)}.num.done,.step.dim .num.done{background:var(--ok);color:#fff}
+.step .in{padding:10px 0 0 32px}
+.prov{border:1px solid var(--hair);border-radius:8px;padding:10px 12px;margin-top:8px}
+.tag{font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:10px;background:var(--sel);color:var(--accT);margin-left:8px}.tag.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+code{font:12.5px ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--win);padding:2px 6px;border-radius:4px;word-break:break-all}
+ol.how{padding-left:20px;margin:0 0 12px}ol.how li{margin-bottom:6px}
+@media (max-width:640px){body{padding:0;place-items:stretch}.win{border-radius:0;box-shadow:none}.body{grid-template-columns:1fr}nav{padding:14px 16px 0}nav ol{display:flex;gap:8px;align-items:center}nav li{font-size:0;padding:0;gap:6px}nav li.on{font-size:13px}.art{display:none}.main{padding:12px 16px 16px}.pane{max-height:none}}
+</style></head><body>
+<div class="win">
+ <div class="tbar">Install Free Coding Helpers</div>
+ <div class="body">
+  <nav aria-label="Setup steps"><ol><li id="s1">Introduction</li><li id="s2">Destination</li><li id="s3">Installation</li><li id="s4">Free AI keys</li><li id="s5">Summary</li></ol>
+   <svg class="art" viewBox="0 0 120 120" aria-hidden="true"><rect x="6" y="6" width="108" height="108" rx="26" fill="currentColor"/><path d="M50 36c-8 0-10 4-10 10v7c0 4-2 7-7 7 5 0 7 3 7 7v7c0 6 2 10 10 10M70 36c8 0 10 4 10 10v7c0 4 2 7 7 7-5 0-7 3-7 7v7c0 6-2 10-10 10" fill="none" stroke="var(--win)" stroke-width="7" stroke-linecap="round"/></svg></nav>
+  <main class="main">
+
+   <section id="p1">
+    <h1>Welcome to Free Coding Helpers</h1>
+    <div class="pane">
+     <p>This sets up a small toolkit that lets your coding app hand simple jobs to free AI models. Setup sends nothing anywhere, and your keys stay on this computer.</p>
+     <h2>Your PC</h2><div class="kv" id="stats"><div>Checking</div><div>...</div></div><p id="plan" class="mut small" style="margin-top:8px"></p>
+     <h2>Which coding app do you use?</h2>
+     <div class="opt sel" id="o-antigravity" role="radio" aria-checked="true" tabindex="0" onclick="pickAgent('antigravity')" onkeydown="kb(event)"><div><b>Antigravity</b><div class="mut small">Free plan, no Claude subscription</div></div></div>
+     <div class="opt" id="o-claude" role="radio" aria-checked="false" tabindex="0" onclick="pickAgent('claude')" onkeydown="kb(event)"><div><b>Claude Code</b><div class="mut small">You have Claude Pro</div></div></div>
+    </div>
+    <div class="btns"><button class="pri" onclick="show(2)">Continue</button></div>
+   </section>
+
+   <section id="p2" class="hide">
+    <h1>Choose your project folder</h1>
+    <div class="pane">
+     <p>Optional. Setup adds privacy files to this folder so secrets and real data stay out of the cloud. You can leave it empty and add a project later.</p>
+     <div class="row"><input id="proj" placeholder="C:\Users\you\my-project" aria-label="Project folder"><button onclick="browse()">Choose...</button></div>
+     <h2>What happens next</h2><p class="mut" id="eta">Checking what needs downloading...</p>
+     <p id="err1" class="bad"></p>
+    </div>
+    <div class="btns"><button onclick="show(1)">Go Back</button><button class="pri" id="go" onclick="install()">Install</button></div>
+   </section>
+
+   <section id="p3" class="hide">
+    <h1>Installing Free Coding Helpers</h1>
+    <div class="pane">
+     <div class="status"><h3 id="stepTitle">Preparing...</h3><div class="bar ind" id="bar"><i></i></div><div class="mut small" id="stepMeta"></div></div>
+     <div id="res" class="res hide"></div>
+     <details><summary>Show details</summary><pre id="log"></pre></details>
+    </div>
+    <div class="btns"><button disabled>Go Back</button><button class="pri" id="next3" disabled onclick="show(4)">Continue</button></div>
+   </section>
+
+   <section id="p4" class="hide">
+    <h1>Connect free AI accounts</h1>
+    <div class="pane">
+     <p class="mut">Four small steps, about 10 minutes, each done once. A key is like a password for a free AI account: keep it private and never paste it into a chat.</p>
+     <div class="bar"><i id="kbar" style="width:0"></i></div><div class="mut small" id="kmeta"></div>
+     <div id="ksteps"></div>
+    </div>
+    <div class="btns"><button class="left" onclick="show(5)">Skip for now</button><button onclick="show(3)">Go Back</button><button class="pri" id="kdone" disabled onclick="show(5)">Continue</button></div>
+   </section>
+
+   <section id="p5" class="hide">
+    <h1 id="sumT">The installation was successful</h1>
+    <div class="pane">
+     <div class="check" id="sumI"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+     <p style="text-align:center">One step left: connect your coding app.</p>
+     <ol class="how"><li>Open your coding app and your project.</li><li>Add this file as a rule (Settings, then Rules or Customizations; the name varies):<br><code id="rules"></code></li><li>Ask it for a small, harmless job, like "add a comment at the top of a file".</li></ol>
+     <div class="row"><button id="openAg" onclick="op('antigravity')">Open Antigravity</button><button onclick="op('folder')">Open the install folder</button></div>
+     <p class="mut small" style="margin-top:18px">Something went wrong? Take a screenshot of this window and send it to whoever shared the setup. You can run setup again any time; it skips what is already done.</p>
+    </div>
+    <div class="btns"><button class="pri" onclick="quit()">Close</button></div>
+   </section>
+
+  </main>
+ </div>
+</div>
+<script>
+const T='__TOKEN__';let agent='antigravity',dest='',from=0,t0=0;
+const $=id=>document.getElementById(id);
+const api=(m,p,b)=>fetch(p,{method:m,headers:{'x-token':T,'content-type':'application/json'},body:b?JSON.stringify(b):undefined}).then(r=>r.json());
+function show(n){if(n===4)renderK();if(n===5)$('openAg').classList.toggle('hide',agent!=='antigravity');
+ for(let i=1;i<=5;i++){$('p'+i).classList.toggle('hide',i!==n);const s=$('s'+i);s.className=i<n?'done':i===n?'on':'';if(i===n)s.setAttribute('aria-current','step');else s.removeAttribute('aria-current')}window.scrollTo(0,0)}
+function pickAgent(a){agent=a;for(const x of ['antigravity','claude']){const o=$('o-'+x);o.classList.toggle('sel',a===x);o.setAttribute('aria-checked',a===x)}}
+function kb(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();e.currentTarget.click()}}
+async function init(){show(1);const r=await api('GET','/api/detect'),d=r.d;dest=r.dest;$('rules').textContent=dest+'\\AGENT-RULES.md';
+ const s=(k,v)=>`<div>${k}</div><div>${v}</div>`,have=x=>x?'installed':'will be installed';
+ $('stats').innerHTML=s('Memory',d.ramGB+' GB ('+d.freeRamGB+' GB free)')+s('Graphics',d.gpu==='none found'?'none found':d.gpu.split(',')[0])+s('Node',d.node||'will be installed')+s('OmniRoute',have(d.omniroute))+s('Ollama',have(d.ollama));
+ $('plan').textContent=r.models.length?'Free local AI model for this PC: '+r.models.join(', ')+' (used for private work and as a backup).':'This PC is small, so it will use cloud-only free models. Do not use it for private data.';
+ if(d.claude)pickAgent('claude');
+ const miss=[!d.node&&'Node',!d.omniroute&&'OmniRoute',r.models.length&&!d.ollama&&'Ollama'].filter(Boolean);
+ $('eta').textContent=miss.length?'To download: '+miss.join(', ')+' (plus the local model if it is not there yet). Big downloads can take 5-10 minutes; you can leave this window open.':'Node, OmniRoute and Ollama are already installed, so nothing big is downloaded (unless the local model is missing). This takes about 1-2 minutes: copy files, run the tests, check the local model answers.'}
+async function browse(){const r=await api('POST','/api/browse');if(r.path)$('proj').value=r.path}
+async function install(){$('err1').textContent='';const r=await api('POST','/api/install',{agent,project:$('proj').value.trim().replace(/^"|"$/g,'')});
+ if(r.error){$('err1').textContent=r.error;return}show(3);t0=Date.now();poll()}
+async function poll(){const r=await api('GET','/api/log?from='+from);from=r.total;const log=$('log');
+ r.lines.forEach(l=>{log.textContent+=l+'\n';const m=l.match(/^\s*-> (.+?)(?::\s|;|$)/);if(m)$('stepTitle').textContent=m[1];
+  const p=l.match(/(\d{1,3})%/);if(p){$('bar').classList.remove('ind');$('bar').firstChild.style.width=p[1]+'%'}else if(m){$('bar').classList.add('ind');$('bar').firstChild.style.width=''}});
+ log.scrollTop=log.scrollHeight;const s=Math.round((Date.now()-t0)/1000);$('stepMeta').textContent=Math.floor(s/60)+'m '+String(s%60).padStart(2,'0')+'s elapsed';
+ if(!r.done){setTimeout(poll,1000);return}
+ $('bar').classList.remove('ind');$('bar').firstChild.style.width='100%';$('stepTitle').textContent=r.code===0?'Install finished':'Install finished with problems';
+ const x=await api('GET','/api/result');const st=x.steps||[];const bad=st.filter(a=>a.status==='failed'||a.status==='skipped');
+ $('res').innerHTML=`<h2 class="${bad.length?'bad':'ok'}">${bad.length?'Some steps need attention':'All steps passed'}</h2>`+st.map(a=>`<div>${a.status==='ok'?'<span class="ok">&#10003;</span>':'<span class="bad">&#10007;</span>'} ${esc(a.name)} <span class="mut small">${esc(a.note||'')}</span></div>`).join('')+(bad.length?'<p class="mut small" style="margin-top:8px">Run setup again to retry; it skips what already worked. If it keeps failing, screenshot this page.</p>':'');
+ if(bad.length){$('sumT').textContent='Setup finished, with problems';$('sumI').classList.add('warn');$('sumI').textContent='!'}
+ $('res').classList.remove('hide');$('next3').disabled=false}
+let kcur=0,kdone=[];
+const KS=[
+ {t:'Start OmniRoute',b:()=>`<p>OmniRoute is the small program that shares your free AI accounts. It must be running.</p><button class="pri" id="gw" onclick="gateway()">Start OmniRoute</button> <span id="gwS"></span><p class="mut small" style="margin-top:8px">Takes up to a minute the first time. If it does not start, open a terminal and type <code>omniroute serve</code>.</p>`},
+ {t:'Add free provider keys',b:()=>`<p>A provider is a company that gives free AI usage. Add one or more; new here? Start with the two marked <b>start here</b>. For each: click <b>Get key</b> (opens its page in a new tab), sign in, click <b>Create API key</b>, copy it, come back to this tab, paste it, click <b>Test &amp; save</b>. The key is checked with a free call and saved inside OmniRoute only.</p><div id="plist" class="mut">Loading...</div>`,load:loadProv},
+ {t:'Create your OmniRoute key',b:()=>`<p>This is the key the toolkit uses to talk to OmniRoute. It is different from the provider keys.</p><ol class="how"><li>In the OmniRoute dashboard open <b>Endpoints</b> (it might be called <b>API Keys</b>).</li><li>Click <b>Create key</b> / <b>New key</b>, name it anything.</li><li>Copy it, paste it below and click Save. It is hidden, kept in your user settings, and never written to a file or sent anywhere.</li></ol><div class="row"><input id="key" type="password" autocomplete="off" placeholder="Paste your OmniRoute key here"><button class="pri" onclick="saveKey()">Save</button></div><p id="keyS"></p>`},
+ {t:'Test that it works',b:()=>`<p>This sends one tiny message ("Reply with OK") through OmniRoute to your free provider to prove everything is connected.</p><button class="pri" id="tb" onclick="testIt()">Run the test</button> <p id="testS" style="margin-top:8px"></p><details><summary>It failed</summary><p class="mut small">Most common causes: no provider key was saved in step 2 (go back and check it shows added), or the provider key was pasted in step 3 instead of the OmniRoute key. Fix it, then run the test again.</p></details>`}];
+const esc=x=>String(x).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+async function loadProv(){const r=await api('GET','/api/providers');$('plist').className='';
+ $('plist').innerHTML=r.list.map(p=>`<div class="prov"><b>${esc(p.name)}</b>${p.done?'<span class="tag ok">&#10003; added</span>':p.rec?'<span class="tag">start here</span>':''}<div class="mut small">${esc(p.limits)}</div>`+
+  (p.done?'':`<div class="row"><button onclick="api('POST','/api/provider-open',{id:'${esc(p.id)}'})">Get key</button>${p.account?`<input id="acc-${esc(p.id)}" placeholder="Cloudflare account id">`:''}<input id="k-${esc(p.id)}" type="password" autocomplete="off" placeholder="Paste the key"><button class="pri" onclick="addProv('${esc(p.id)}')">Test &amp; save</button></div>`)+`<p id="s-${esc(p.id)}" class="small" style="margin:6px 0 0"></p></div>`).join('');
+ if(r.list.some(p=>p.done)&&!kdone.includes(1)){kdone.push(1);kprog()}}
+async function addProv(id){const k=$('k-'+id),a=$('acc-'+id),s=$('s-'+id);s.textContent='Checking...';const r=await api('POST','/api/provider-key',{id,key:k.value,accountId:a?a.value:''});k.value='';
+ s.innerHTML=`<span class="${r.stored?'ok':'bad'}">${esc(r.reason)}</span>`;if(r.stored){if(!kdone.includes(1))kdone.push(1);renderK()}}
+function kprog(){$('kbar').style.width=(kdone.length/KS.length*100)+'%';$('kmeta').textContent=kdone.length+' of '+KS.length+' steps done';$('kdone').disabled=kdone.length<KS.length}
+function renderK(){const el=$('ksteps');if(!el)return;el.innerHTML=KS.map((s,i)=>{const d=kdone.includes(i),open=i===kcur;
+ return `<div class="step ${open?'':'dim'}"><h3 role="button" tabindex="0" onclick="kcur=${i};renderK()" onkeydown="kb(event)"><span class="num ${d?'done':''}">${d?'&#10003;':i+1}</span>${s.t}</h3>${open?`<div class="in">${s.b()}<div class="row"><button ${i?'':'disabled'} onclick="kcur=${i-1};renderK()">Back</button>${i<KS.length-1?`<button onclick="kok(${i})">I did this, next</button>`:''}</div></div>`:''}</div>`}).join('');
+ kprog();if(KS[kcur].load)KS[kcur].load()}
+function kok(i){if(!kdone.includes(i))kdone.push(i);kcur=Math.min(i+1,KS.length-1);renderK()}
+async function gateway(){$('gw').disabled=true;$('gwS').textContent='Starting, please wait...';const r=await api('POST','/api/gateway');$('gwS').innerHTML=r.up?'<span class="ok">Running</span>':'<span class="bad">Did not start</span>';$('gw').disabled=false;if(r.up)kok(0)}
+async function saveKey(){const r=await api('POST','/api/key',{key:$('key').value});$('key').value='';
+ $('keyS').innerHTML=r.error?`<span class="bad">${esc(r.error)}</span>`:r.works?'<span class="ok">Saved, and OmniRoute accepted it.</span>':'<span class="bad">Saved, but OmniRoute did not accept it ('+esc(r.gateway)+'). Make sure you copied the OmniRoute key, not a provider key.</span>';if(r.works)setTimeout(()=>kok(2),900)}
+async function testIt(){$('tb').disabled=true;$('testS').textContent='Testing, up to a minute...';const r=await api('POST','/api/test');$('tb').disabled=false;
+ $('testS').innerHTML=r.ok?'<span class="ok">It works! Reply: '+esc(r.reply)+'</span>':'<span class="bad">Not yet: '+esc(r.error)+'</span>';if(r.ok){if(!kdone.includes(KS.length-1))kdone.push(KS.length-1);kprog()}}
+const op=what=>api('POST','/api/open',{what});
+const quit=()=>{api('POST','/api/quit');document.body.innerHTML='<div class="win"><div class="tbar">Install Free Coding Helpers</div><div class="main" style="padding:48px"><h1>Setup closed</h1><p class="mut">You can close this tab.</p></div></div>'};
+init();
+</script></body></html>

@@ -1,0 +1,13 @@
+# run output, usage counters and logs stay on your machine
+runs/
+usage/
+limits-state/
+limits-429.log
+*.log
+toolkit/dist/
+node_modules/
+.fcode-install.json
+.fcode-keys-done.json
+*.bak
+*.fcode-bak-*
+.env

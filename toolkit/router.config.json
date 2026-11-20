@@ -1,0 +1,221 @@
+{
+  "gateway": "http://localhost:20128/v1",
+  "safety": 0.5,
+  "defaultRpm": 10,
+  "defaultConcurrency": 2,
+  "maxAttempts": 3,
+  "maxRetries": 5,
+  "breaker": {
+    "fails": 3,
+    "coolSec": 300
+  },
+  "timeoutSec": 90,
+  "maxTokens": 4096,
+  "contextBudget": 24000,
+  "template": "v1",
+  "systemPrompt": "short",
+  "stream": true,
+  "callCap": 2200,
+  "never": [
+    "ollamacloud/kimi-",
+    "ollamacloud/deepseek-",
+    "ollamacloud/glm-",
+    "ollamacloud/minimax-",
+    "ollamacloud/mistral-large-3",
+    "ollama-cloud/kimi-",
+    "ollama-cloud/deepseek-",
+    "ollama-cloud/glm-",
+    "ollama-cloud/minimax-",
+    "ollama-cloud/mistral-large-3"
+  ],
+  "gated": [
+    "auto/",
+    "no-think/",
+    "dva/",
+    "aug/",
+    "zc/",
+    "ddgw/",
+    "tllm/",
+    "oc/",
+    "felo/",
+    "aihorde/",
+    "cfp/",
+    "cxa/",
+    "unc/",
+    "pepper/",
+    "veo-free/",
+    "veoaifree-web/"
+  ],
+  "models": {
+    "mistral/codestral-latest": {
+      "tier": "cheap",
+      "class": "mid",
+      "format": "full",
+      "rpm": 6,
+      "limits": {
+        "rpm": 30,
+        "rpd": 2000
+      }
+    },
+    "mistral/ministral-8b-latest": {
+      "tier": "cheap",
+      "class": "small",
+      "format": "full",
+      "rpm": 6,
+      "limits": {
+        "rpm": 60,
+        "tpm": 500000
+      }
+    },
+    "mistral/ministral-14b-latest": {
+      "tier": "mid",
+      "class": "mid",
+      "format": "full",
+      "rpm": 6,
+      "limits": {
+        "rpm": 60,
+        "tpm": 500000
+      }
+    },
+    "groq/openai/gpt-oss-20b": {
+      "tier": "cheap",
+      "class": "reasoning",
+      "format": "diff",
+      "rpm": 15,
+      "limits": {
+        "rpm": 30,
+        "tpm": 8000,
+        "rpd": 1000,
+        "tpd": 200000
+      }
+    },
+    "groq/openai/gpt-oss-120b": {
+      "tier": "mid",
+      "class": "reasoning",
+      "format": "full",
+      "rpm": 15,
+      "limits": {
+        "rpm": 30,
+        "tpm": 8000,
+        "rpd": 1000,
+        "tpd": 200000
+      }
+    },
+    "groq/qwen/qwen3.8-27b": {
+      "tier": "mid",
+      "class": "reasoning",
+      "format": "full",
+      "rpm": 15,
+      "limits": {
+        "rpm": 30,
+        "tpm": 8000,
+        "rpd": 1000,
+        "tpd": 200000
+      }
+    },
+    "gemini/gemini-flash-lite-latest": {
+      "tier": "cheap",
+      "class": "mid",
+      "format": "full",
+      "rpm": 10,
+      "concurrency": 2,
+      "timeoutSec": 120,
+      "limits": {
+        "rpm": 10,
+        "tpm": 250000
+      }
+    },
+    "gemini/gemini-flash-latest": {
+      "tier": "strong",
+      "class": "large",
+      "format": "full",
+      "rpm": 3,
+      "concurrency": 1,
+      "timeoutSec": 120,
+      "limits": {
+        "rpm": 5,
+        "tpm": 250000,
+        "rpd": 20
+      }
+    },
+    "nvidia/nvidia/nemotron-3-ultra-550b-a55b": {
+      "tier": "strong",
+      "class": "large",
+      "format": "full",
+      "rpm": 29,
+      "timeoutSec": 180,
+      "limits": {
+        "rpm": 40
+      }
+    },
+    "local/qwen2.5-coder:7b": {
+      "tier": "local",
+      "class": "small",
+      "format": "full",
+      "rpm": 600,
+      "concurrency": 1,
+      "timeoutSec": 300,
+      "local": true,
+      "numCtx": 16384
+    }
+  },
+  "chains": {
+    "edit": [
+      "groq/openai/gpt-oss-120b",
+      "groq/qwen/qwen3.8-27b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "gemini/gemini-flash-lite-latest",
+      "gemini/gemini-flash-latest",
+      "local/qwen2.5-coder:7b"
+    ],
+    "bugfix": [
+      "groq/openai/gpt-oss-120b",
+      "groq/qwen/qwen3.8-27b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "gemini/gemini-flash-lite-latest",
+      "gemini/gemini-flash-latest",
+      "local/qwen2.5-coder:7b"
+    ],
+    "refactor": [
+      "groq/openai/gpt-oss-120b",
+      "groq/qwen/qwen3.8-27b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "gemini/gemini-flash-lite-latest",
+      "gemini/gemini-flash-latest",
+      "local/qwen2.5-coder:7b"
+    ],
+    "feature": [
+      "groq/openai/gpt-oss-120b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "groq/qwen/qwen3.8-27b",
+      "gemini/gemini-flash-lite-latest",
+      "gemini/gemini-flash-latest",
+      "local/qwen2.5-coder:7b"
+    ],
+    "tests": [
+      "gemini/gemini-flash-lite-latest",
+      "groq/openai/gpt-oss-120b",
+      "groq/qwen/qwen3.8-27b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "groq/openai/gpt-oss-20b",
+      "gemini/gemini-flash-latest",
+      "local/qwen2.5-coder:7b"
+    ],
+    "explain": [
+      "gemini/gemini-flash-lite-latest",
+      "groq/openai/gpt-oss-120b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "groq/openai/gpt-oss-20b",
+      "groq/qwen/qwen3.8-27b",
+      "local/qwen2.5-coder:7b"
+    ],
+    "review": [
+      "gemini/gemini-flash-lite-latest",
+      "groq/openai/gpt-oss-120b",
+      "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "local/qwen2.5-coder:7b"
+    ]
+  },
+  "localEndpoint": "http://localhost:11434",
+  "limitSafety": 0.8
+}

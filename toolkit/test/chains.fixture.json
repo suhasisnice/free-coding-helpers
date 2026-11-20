@@ -1,0 +1,61 @@
+{
+ "edit": [
+  "mistral/codestral-latest",
+  "gemini/gemini-flash-lite-latest",
+  "groq/openai/gpt-oss-120b",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "gemini/gemini-flash-latest",
+  "groq/openai/gpt-oss-20b",
+  "local/qwen2.5-coder:7b"
+ ],
+ "bugfix": [
+  "mistral/codestral-latest",
+  "gemini/gemini-flash-lite-latest",
+  "groq/openai/gpt-oss-120b",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "gemini/gemini-flash-latest",
+  "groq/openai/gpt-oss-20b",
+  "local/qwen2.5-coder:7b"
+ ],
+ "refactor": [
+  "mistral/codestral-latest",
+  "gemini/gemini-flash-lite-latest",
+  "groq/openai/gpt-oss-120b",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "gemini/gemini-flash-latest",
+  "groq/openai/gpt-oss-20b",
+  "local/qwen2.5-coder:7b"
+ ],
+ "feature": [
+  "mistral/codestral-latest",
+  "gemini/gemini-flash-lite-latest",
+  "groq/openai/gpt-oss-120b",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "gemini/gemini-flash-latest",
+  "groq/openai/gpt-oss-20b",
+  "local/qwen2.5-coder:7b"
+ ],
+ "tests": [
+  "groq/openai/gpt-oss-120b",
+  "mistral/codestral-latest",
+  "gemini/gemini-flash-lite-latest",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "gemini/gemini-flash-latest",
+  "groq/openai/gpt-oss-20b",
+  "local/qwen2.5-coder:7b"
+ ],
+ "explain": [
+  "gemini/gemini-flash-lite-latest",
+  "mistral/codestral-latest",
+  "groq/openai/gpt-oss-120b",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "local/qwen2.5-coder:7b"
+ ],
+ "review": [
+  "gemini/gemini-flash-lite-latest",
+  "mistral/codestral-latest",
+  "groq/openai/gpt-oss-120b",
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "local/qwen2.5-coder:7b"
+ ]
+}

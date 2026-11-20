@@ -1,0 +1,540 @@
+{
+  "root": "sandbox",
+  "jobs": [
+    {
+      "id": "E1",
+      "type": "edit",
+      "files": [
+        "src/text.js"
+      ],
+      "instruction": "Change truncate so it marks the cut with the single ellipsis character '…' (U+2026) instead of three dots. The result must still be at most max characters long.",
+      "check": "node --test \"test/**/*.test.js\" checks/e1.test.js"
+    },
+    {
+      "id": "E2",
+      "type": "edit",
+      "files": [
+        "src/money.js"
+      ],
+      "instruction": "formatCents should also support EUR (€), GBP (£) and INR (₹) with the same number format, e.g. formatCents(1250, 'EUR') returns '€12.50'. Unknown currencies must still throw.",
+      "check": "node --test \"test/**/*.test.js\" checks/e2.test.js"
+    },
+    {
+      "id": "E3",
+      "type": "edit",
+      "files": [
+        "src/validate.js"
+      ],
+      "instruction": "Raise the maximum description length in validateExpense from 100 to 140 characters.",
+      "check": "node --test \"test/**/*.test.js\" checks/e3.test.js"
+    },
+    {
+      "id": "E4",
+      "type": "edit",
+      "files": [
+        "src/dates.js"
+      ],
+      "instruction": "Add an optional second argument to formatDate: formatDate(d, 'long') returns e.g. '5 March 2026' (day without leading zero, full English month name, year). formatDate(d) without the argument must keep returning 'YYYY-MM-DD'.",
+      "check": "node --test \"test/**/*.test.js\" checks/e4.test.js"
+    },
+    {
+      "id": "E5",
+      "type": "edit",
+      "files": [
+        "src/validate.js",
+        "src/budget.js"
+      ],
+      "instruction": "Add a new expense category 'health'. It must be accepted by validateExpense and by checkBudgets.",
+      "check": "node --test \"test/**/*.test.js\" checks/e5.test.js"
+    },
+    {
+      "id": "E6",
+      "type": "edit",
+      "files": [
+        "src/csv.js"
+      ],
+      "instruction": "Let parseCSV take an optional second argument { delimiter }, e.g. parseCSV(text, { delimiter: ';' }). The default delimiter stays ','. Quoted fields may contain the delimiter.",
+      "check": "node --test \"test/**/*.test.js\" checks/e6.test.js"
+    },
+    {
+      "id": "E7",
+      "type": "edit",
+      "files": [
+        "src/report.js"
+      ],
+      "instruction": "In summarize, order the category lines by total spent, largest first, instead of alphabetically. Break ties alphabetically. Keep the TOTAL line last.",
+      "check": "node --test \"test/**/*.test.js\" checks/e7.test.js"
+    },
+    {
+      "id": "E8",
+      "type": "edit",
+      "files": [
+        "src/cli.js"
+      ],
+      "instruction": "Add a --json flag to the list command. With --json, list prints the matching expenses as one JSON array in a single out() call (out(JSON.stringify(items))) instead of the text rows.",
+      "check": "node --test \"test/**/*.test.js\" checks/e8.test.js"
+    },
+    {
+      "id": "B1",
+      "type": "bugfix",
+      "files": [
+        "src/money.js"
+      ],
+      "instruction": "Bug: amounts with one decimal digit are stored wrong. parseAmount('12.5') returns 1205 cents but should return 1250. Fix it.",
+      "check": "node --test \"test/**/*.test.js\" checks/b1.test.js"
+    },
+    {
+      "id": "B2",
+      "type": "bugfix",
+      "files": [
+        "src/cli.js"
+      ],
+      "instruction": "Bug: the last command-line word is sometimes ignored. `ledger add 2026-03-05 12.50 food team lunch` saves the description as 'team' instead of 'team lunch', and `ledger list --all` never sets the all flag. Fix the argument parser.",
+      "check": "node --test \"test/**/*.test.js\" checks/b2.test.js"
+    },
+    {
+      "id": "B3",
+      "type": "bugfix",
+      "files": [
+        "src/report.js"
+      ],
+      "instruction": "Bug: monthly totals are labelled wrong. Expenses from March 2026 come out under '2026-2' instead of '2026-03'. totalsByMonth keys must be 'YYYY-MM'.",
+      "check": "node --test \"test/**/*.test.js\" checks/b3.test.js"
+    },
+    {
+      "id": "B4",
+      "type": "bugfix",
+      "files": [
+        "src/budget.js"
+      ],
+      "instruction": "Bug: expenses recorded with category 'Food' are not counted against a 'food' budget (and vice versa). Category matching in checkBudgets must ignore upper/lower case.",
+      "check": "node --test \"test/**/*.test.js\" checks/b4.test.js"
+    },
+    {
+      "id": "B5",
+      "type": "bugfix",
+      "files": [
+        "src/store.js"
+      ],
+      "instruction": "Bug: deleting one expense with remove(id) also deletes every expense that was added after it. It should delete only that one.",
+      "check": "node --test \"test/**/*.test.js\" checks/b5.test.js"
+    },
+    {
+      "id": "B6",
+      "type": "bugfix",
+      "files": [
+        "src/importer.js"
+      ],
+      "instruction": "Bug: import error messages point at the wrong line. Line 1 of the file is the header, yet a bad row on line 3 is reported as 'line 2'. Report the real line number in the file (blank lines count too).",
+      "check": "node --test \"test/**/*.test.js\" checks/b6.test.js"
+    },
+    {
+      "id": "T1",
+      "type": "tests",
+      "files": [
+        "src/dates.js",
+        "test/dates.test.js"
+      ],
+      "instruction": "Write a node:test test file test/dates.test.js for src/dates.js. Cover every exported function, including invalid dates like '2026-02-30', month lengths (leap and non-leap February) and both weekend days. Do not change src/dates.js.",
+      "check": "node scripts/check-tests.js T1"
+    },
+    {
+      "id": "T2",
+      "type": "tests",
+      "files": [
+        "src/text.js",
+        "test/text.test.js"
+      ],
+      "instruction": "Write a node:test test file test/text.test.js for src/text.js covering truncate, slugify and plural, including edge cases (exact length, leading/trailing punctuation, zero and one). Do not change src/text.js.",
+      "check": "node scripts/check-tests.js T2"
+    },
+    {
+      "id": "T3",
+      "type": "tests",
+      "files": [
+        "src/validate.js",
+        "test/validate.test.js"
+      ],
+      "instruction": "Write a node:test test file test/validate.test.js for validateExpense in src/validate.js: one passing case and one failing case for each rule (date, amount, category, description). Do not change src/validate.js.",
+      "check": "node scripts/check-tests.js T3"
+    },
+    {
+      "id": "T4",
+      "type": "tests",
+      "files": [
+        "src/csv.js",
+        "test/csv-write.test.js"
+      ],
+      "instruction": "Write a node:test test file test/csv-write.test.js for toCSV in src/csv.js: plain values, values containing commas, quotes and newlines, null/undefined values, and the trailing newline. Do not change src/csv.js.",
+      "check": "node scripts/check-tests.js T4"
+    },
+    {
+      "id": "T5",
+      "type": "tests",
+      "files": [
+        "src/money.js",
+        "test/split.test.js"
+      ],
+      "instruction": "Write a node:test test file test/split.test.js for splitEvenly in src/money.js: exact splits, remainders (which parts get the extra cents), and invalid part counts. Do not change src/money.js.",
+      "check": "node scripts/check-tests.js T5"
+    },
+    {
+      "id": "T6",
+      "type": "tests",
+      "files": [
+        "src/report.js",
+        "test/topn.test.js"
+      ],
+      "instruction": "Write a node:test test file test/topn.test.js for topN in src/report.js: ordering, ties, the n limit and the default. Do not change src/report.js.",
+      "check": "node scripts/check-tests.js T6"
+    },
+    {
+      "id": "R1",
+      "type": "refactor",
+      "files": [
+        "src/money.js",
+        "src/importer.js",
+        "src/cli.js",
+        "test/money.test.js"
+      ],
+      "instruction": "Rename parseAmount to toCents everywhere: the function in money.js, its export, every caller and the existing tests. Do not keep an alias with the old name.",
+      "check": "node --test \"test/**/*.test.js\" checks/r1.test.js"
+    },
+    {
+      "id": "R2",
+      "type": "refactor",
+      "files": [
+        "src/validate.js",
+        "src/budget.js",
+        "src/categories.js"
+      ],
+      "instruction": "The category list is duplicated in validate.js and budget.js. Move it into a new module src/categories.js that exports CATEGORIES, and require it from both files. validate.js must keep exporting CATEGORIES.",
+      "check": "node --test \"test/**/*.test.js\" checks/r2.test.js"
+    },
+    {
+      "id": "R3",
+      "type": "refactor",
+      "files": [
+        "src/report.js",
+        "src/cli.js",
+        "src/text.js"
+      ],
+      "instruction": "report.js and cli.js each define the same pad() helper. Move it into src/text.js as an exported padRight(s, width) and use it from both files instead of their local copies. Output must not change.",
+      "check": "node --test \"test/**/*.test.js\" checks/r3.test.js"
+    },
+    {
+      "id": "R4",
+      "type": "refactor",
+      "files": [
+        "src/importer.js",
+        "src/cli.js",
+        "test/importer.test.js"
+      ],
+      "instruction": "Make importCSV return errors as objects { line, message } (line is a number, message has no 'line N:' prefix) instead of strings like 'line 2: reason'. Update cli.js so the import command still prints 'line N: reason', and update the existing importer tests.",
+      "check": "node --test \"test/**/*.test.js\" checks/r4.test.js"
+    },
+    {
+      "id": "X1",
+      "type": "explain",
+      "files": [
+        "src/importer.js"
+      ],
+      "instruction": "Explain what importCSV does with a row that fails validation, and what the caller gets back.",
+      "check": "node scripts/check-answer.js X1"
+    },
+    {
+      "id": "X2",
+      "type": "review",
+      "files": [
+        "src/store.js"
+      ],
+      "instruction": "Review store.js for correctness bugs. For each bug, name the function, what goes wrong, and a fix.",
+      "check": "node scripts/check-answer.js X2"
+    },
+    {
+      "id": "X3",
+      "type": "explain",
+      "files": [
+        "src/budget.js"
+      ],
+      "instruction": "Explain what checkBudgets returns for each category, and exactly when `alert` and `over` are true.",
+      "check": "node scripts/check-answer.js X3"
+    },
+    {
+      "id": "F1",
+      "type": "feature",
+      "files": [
+        "src/cli.js",
+        "src/csv.js"
+      ],
+      "instruction": "Add an `export` command to the CLI that prints all expenses as CSV with the header date,amount,category,description, using toCSV from csv.js. Write amounts as plain decimals like 1234.56 (no $ and no thousands separator) so the output can be imported again with importCSV. Return exit code 0.",
+      "check": "node --test \"test/**/*.test.js\" checks/f1.test.js"
+    },
+    {
+      "id": "F2",
+      "type": "feature",
+      "files": [
+        "src/report.js"
+      ],
+      "instruction": "Add and export averageByCategory(expenses) in report.js. It returns an object mapping each category to its average amount in cents, rounded to the nearest cent. An empty list gives {}.",
+      "check": "node --test \"test/**/*.test.js\" checks/f2.test.js"
+    },
+    {
+      "id": "F3",
+      "type": "feature",
+      "files": [
+        "src/budget.js",
+        "src/dates.js"
+      ],
+      "instruction": "Add and export forecast(expenses, budgets, today) in budget.js, where today is 'YYYY-MM-DD'. For each budgeted category, spent = expenses in today's month dated on or before today; projected = Math.round(spent / dayOfMonth * daysInMonth). Return [{ category, spent, projected, limit, over }] with over = projected > limit. Use daysInMonth from dates.js.",
+      "check": "node --test \"test/**/*.test.js\" checks/f3.test.js"
+    },
+    {
+      "id": "L1",
+      "type": "edit",
+      "files": [
+        "src/merchants.js"
+      ],
+      "instruction": "Add a rule so descriptions containing 'zomato' are categorized as 'food'. Every existing categorization must stay the same.",
+      "check": "node --test checks/l1.test.js"
+    },
+    {
+      "id": "L2",
+      "type": "bugfix",
+      "files": [
+        "src/merchants.js"
+      ],
+      "instruction": "Netflix payments are being categorized as 'food' but should be 'fun'. Find the cause and fix it without changing any other merchant.",
+      "check": "node --test checks/l2.test.js"
+    },
+    {
+      "id": "L3",
+      "type": "explain",
+      "files": [
+        "src/merchants.js"
+      ],
+      "instruction": "Explain how categorize picks a category when more than one rule matches a description, and what it returns when none match.",
+      "check": "node scripts/check-answer.js L3"
+    },
+    {
+      "id": "L4",
+      "type": "refactor",
+      "files": [
+        "src/merchants.js",
+        "src/merchant-rules.js"
+      ],
+      "instruction": "Move the RULES table out of src/merchants.js into a new module src/merchant-rules.js that exports { RULES }. src/merchants.js must require it, keep exporting categorize and RULES, and behave exactly as before.",
+      "check": "node --test checks/l4.test.js"
+    },
+    {
+      "id": "L5",
+      "type": "tests",
+      "files": [
+        "src/merchants.js",
+        "test/merchants.test.js"
+      ],
+      "instruction": "Write a node:test test file test/merchants.test.js for src/merchants.js covering categorize: case-insensitivity, whitespace, a description containing a merchant name, and the fallback for unknown text. Do not change src/merchants.js.",
+      "check": "node scripts/check-tests.js L5"
+    },
+    {
+      "id": "E9",
+      "type": "edit",
+      "files": [
+        "src/text.js"
+      ],
+      "instruction": "Make plural handle regular English endings: a word ending in a consonant + 'y' becomes '...ies' ('category' -> 'categories'), and a word ending in s, x, z, ch or sh gets 'es' ('box' -> 'boxes'). Everything else still just adds 's', and a count of 1 still gives the word unchanged.",
+      "check": "node --test \"test/**/*.test.js\" checks/e9.test.js"
+    },
+    {
+      "id": "E10",
+      "type": "edit",
+      "files": [
+        "src/money.js"
+      ],
+      "instruction": "Make parseAmount accept a minus sign before the dollar sign ('-$5.00' -> -500) and accounting-style negatives in parentheses ('(12.50)' -> -1250, '($1,000)' -> -100000). Everything it accepted or rejected before must behave the same.",
+      "check": "node --test \"test/**/*.test.js\" checks/e10.test.js"
+    },
+    {
+      "id": "E11",
+      "type": "edit",
+      "files": [
+        "src/dates.js"
+      ],
+      "instruction": "formatDate should throw an Error with the message 'invalid date' when given an invalid Date object (for example new Date('nonsense')) instead of the RangeError it throws now. Valid dates format as before.",
+      "check": "node --test \"test/**/*.test.js\" checks/e11.test.js"
+    },
+    {
+      "id": "E12",
+      "type": "edit",
+      "files": [
+        "src/validate.js"
+      ],
+      "instruction": "validateExpense should reject an expense whose description is empty or only spaces. Add an error message that contains the word 'description'. Valid expenses and all other errors stay the same.",
+      "check": "node --test \"test/**/*.test.js\" checks/e12.test.js"
+    },
+    {
+      "id": "E13",
+      "type": "edit",
+      "files": [
+        "src/validate.js"
+      ],
+      "instruction": "validateExpense only checks the shape of the date. Also reject dates that do not exist on the calendar, such as '2026-02-30' or '2026-13-01', with the same error message 'date must be YYYY-MM-DD'. Use parseDate from dates.js.",
+      "check": "node --test \"test/**/*.test.js\" checks/e13.test.js"
+    },
+    {
+      "id": "E14",
+      "type": "edit",
+      "files": [
+        "src/csv.js"
+      ],
+      "instruction": "Let toCSV take an optional second argument { eol } that sets the line ending. toCSV(rows, { eol: '\\r\\n' }) must end every row with CRLF, including the last. With no second argument the output is exactly what it is today (LF).",
+      "check": "node --test \"test/**/*.test.js\" checks/e14.test.js"
+    },
+    {
+      "id": "E15",
+      "type": "edit",
+      "files": [
+        "src/budget.js"
+      ],
+      "instruction": "Let checkBudgets take an optional fourth argument alertRatio that replaces the 0.8 warning threshold for that call. With no fourth argument it must behave exactly as before.",
+      "check": "node --test \"test/**/*.test.js\" checks/e15.test.js"
+    },
+    {
+      "id": "B7",
+      "type": "bugfix",
+      "files": [
+        "src/stats.js"
+      ],
+      "instruction": "median returns the wrong answer for a list with an even number of values, for example median([1, 2, 3, 4]) should be 2.5. Fix it without changing the other cases.",
+      "check": "node --test \"test/**/*.test.js\" checks/b7.test.js"
+    },
+    {
+      "id": "B8",
+      "type": "bugfix",
+      "files": [
+        "src/recurring.js"
+      ],
+      "instruction": "A monthly bill due on the 31st jumps two months ahead instead of one: nextDue('2026-01-31', 'monthly') should be '2026-02-28' but is in March. Fix nextDue so a monthly bill lands on the last day of a shorter month (Feb 29 in a leap year). Weekly bills are fine.",
+      "check": "node --test \"test/**/*.test.js\" checks/b8.test.js"
+    },
+    {
+      "id": "B9",
+      "type": "bugfix",
+      "files": [
+        "src/search.js"
+      ],
+      "instruction": "searchExpenses misses matches that differ only in upper/lower case: searching 'coffee' should find an expense described 'Coffee beans'. Fix it as the comment above the function describes.",
+      "check": "node --test \"test/**/*.test.js\" checks/b9.test.js"
+    },
+    {
+      "id": "B10",
+      "type": "bugfix",
+      "files": [
+        "src/ids.js"
+      ],
+      "instruction": "nextId hands out an id that is already taken when ids have gaps: for items with ids 1 and 3 it returns 3, but it should return 4. Fix it as the comment describes.",
+      "check": "node --test \"test/**/*.test.js\" checks/b10.test.js"
+    },
+    {
+      "id": "B11",
+      "type": "bugfix",
+      "files": [
+        "src/rounding.js"
+      ],
+      "instruction": "splitByWeights loses cents: splitByWeights(100, [1, 1, 1]) returns [33, 33, 33], which adds up to 99. The parts must add up to exactly the total, as the comment above the function says.",
+      "check": "node --test \"test/**/*.test.js\" checks/b11.test.js"
+    },
+    {
+      "id": "B12",
+      "type": "bugfix",
+      "files": [
+        "src/tags.js"
+      ],
+      "instruction": "parseTags lets one empty tag through: parseTags(' , ,') returns [''] and parseTags('a,,b') returns ['a', '', 'b']. Empty tags must be dropped, as the comment above the function says.",
+      "check": "node --test \"test/**/*.test.js\" checks/b12.test.js"
+    },
+    {
+      "id": "F4",
+      "type": "feature",
+      "files": [
+        "src/text.js"
+      ],
+      "instruction": "Add and export titleCase(s) in text.js: it returns s with each word starting with a capital letter and the rest lower case, words separated by single spaces (extra spaces collapse, leading and trailing spaces are dropped). An empty string gives ''.",
+      "check": "node --test \"test/**/*.test.js\" checks/f4.test.js"
+    },
+    {
+      "id": "F5",
+      "type": "feature",
+      "files": [
+        "src/dates.js"
+      ],
+      "instruction": "Add and export addMonths(d, n) in dates.js: it returns a new UTC Date n months after d (n may be negative). If the day does not exist in the target month it uses that month's last day, e.g. 31 January plus 1 month is 28 February (29 in a leap year). Use daysInMonth.",
+      "check": "node --test \"test/**/*.test.js\" checks/f5.test.js"
+    },
+    {
+      "id": "F6",
+      "type": "feature",
+      "files": [
+        "src/validate.js"
+      ],
+      "instruction": "Add and export validateAll(expenses) in validate.js. It checks every expense in the array with validateExpense and returns an array of { index, errors } for the ones that are not ok (index is the position in the input). If all are valid it returns [].",
+      "check": "node --test \"test/**/*.test.js\" checks/f6.test.js"
+    },
+    {
+      "id": "F7",
+      "type": "feature",
+      "files": [
+        "src/money.js"
+      ],
+      "instruction": "Add and export percentOf(cents, pct) in money.js: pct percent of an amount in cents, as integer cents, rounded half away from zero (percentOf(5, 50) is 3 and percentOf(-5, 50) is -3). Example: percentOf(1250, 10) is 125.",
+      "check": "node --test \"test/**/*.test.js\" checks/f7.test.js"
+    },
+    {
+      "id": "R5",
+      "type": "refactor",
+      "files": [
+        "src/csv.js"
+      ],
+      "instruction": "Rename the helper quote in csv.js to quoteField and export it (module.exports gets quoteField alongside parseCSV and toCSV). toCSV and parseCSV must behave exactly as before and no longer mention the old name.",
+      "check": "node --test \"test/**/*.test.js\" checks/r5.test.js"
+    },
+    {
+      "id": "R6",
+      "type": "refactor",
+      "files": [
+        "src/store.js",
+        "src/filters.js"
+      ],
+      "instruction": "Move the filter test inside store.list into a new module src/filters.js that exports matchesFilter(item, filter) (same rules: optional category and month 'YYYY-MM'). store.js must require it and use it; list must behave exactly as before.",
+      "check": "node --test \"test/**/*.test.js\" checks/r6.test.js"
+    },
+    {
+      "id": "R7",
+      "type": "refactor",
+      "files": [
+        "src/report.js",
+        "src/group.js"
+      ],
+      "instruction": "totalsByCategory in report.js loops to add up amounts per category. Add a new module src/group.js exporting groupSum(items, keyFn, valueFn) that returns an object of summed values per key, and use it from totalsByCategory. Do not change what totalsByMonth returns. Output of every report function must stay the same.",
+      "check": "node --test \"test/**/*.test.js\" checks/r7.test.js"
+    },
+    {
+      "id": "X4",
+      "type": "explain",
+      "files": [
+        "src/dates.js"
+      ],
+      "instruction": "Explain in plain words why parseDate in src/dates.js compares the month and day of the Date it built against the input, and what would go wrong for an input like '2026-02-30' without that comparison.",
+      "check": "node scripts/check-answer.js X4"
+    },
+    {
+      "id": "X5",
+      "type": "explain",
+      "files": [
+        "src/money.js"
+      ],
+      "instruction": "Explain in plain words what splitEvenly in src/money.js does with leftover cents when the total does not divide evenly, and why the returned parts always add up to the total. Use splitEvenly(1000, 3) as the example.",
+      "check": "node scripts/check-answer.js X5"
+    }
+  ]
+}

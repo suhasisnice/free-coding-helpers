@@ -1,0 +1,8 @@
+{
+  "name": "ledger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tiny personal expense tracker: add, import, report and budget expenses from the command line.",
+  "bin": { "ledger": "src/cli.js" },
+  "scripts": { "test": "node --test \"test/**/*.test.js\"" }
+}
